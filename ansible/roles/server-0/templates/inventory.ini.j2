@@ -1,18 +1,15 @@
-# ## Configure 'ip' variable to bind kubernetes services on a
-# ## different ip than the default iface
-# ## We should set etcd_member_name for etcd cluster. The node that is not a etcd member do not need to set the value, or can set the empty string value.
 [all]
-server-0 {{ hostvars['server-0'] }}
-server-1 {{ hostvars['server-1'] }}
+server-0  ansible_host={{ hostvars['server-0']['ansible_host'] }}
+server-1  ansible_host={{ hostvars['server-1']['ansible_host'] }}
 
 [kube_control_plane]
-server-0 {{ hostvars['server-0'] }}
+server-0  ansible_host={{ hostvars['server-0']['ansible_host'] }}
 
 [etcd]
-server-0 {{ hostvars['server-0'] }}
+server-0  ansible_host={{ hostvars['server-0']['ansible_host'] }}
 
 [kube_node]
-server-1 {{ hostvars['server-1'] }}
+server-1  ansible_host={{ hostvars['server-1']['ansible_host'] }}
 
 [calico_rr]
 

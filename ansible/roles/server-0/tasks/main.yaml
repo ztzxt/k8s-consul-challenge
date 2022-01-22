@@ -13,4 +13,4 @@
 - name: Create inventory
   template:
     src: templates/inventory.ini.j2
-    dest: ~/kubespray/inventory/sample/iventory.ini
+    dest: ~/kubespray/inventory/sample/inventory.ini
