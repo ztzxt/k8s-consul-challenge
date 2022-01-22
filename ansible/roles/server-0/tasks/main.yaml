@@ -9,3 +9,8 @@
     repo: https://github.com/kubernetes-sigs/kubespray.git
     version: v{{ k8s_kubespray_version }}
     dest: ~/kubespray
+
+- name: Create inventory
+  template:
+    src: templates/inventory.ini.j2
+    dest: ~/kubespray/inventory/sample/iventory.ini
