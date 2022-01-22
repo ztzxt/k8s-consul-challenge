@@ -1,0 +1,4 @@
+---
+- hosts: k8s_all
+  roles:
+    - role: kubernetes.yaml

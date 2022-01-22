@@ -1,0 +1,1 @@
+Copy ssh key to server-0 since it will be used as Ansible host

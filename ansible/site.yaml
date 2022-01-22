@@ -1,11 +1,11 @@
 ---
+- hosts: all
+  roles:
+    - role: common
+
 - import_playbook: kubernetes.yaml
 - import_playbook: consul.yaml
 - import_playbook: external_mon.yaml
 - import_playbook: logging.yaml
 - import_playbook: gitlab.yaml
 - import_playbook: custom_tool.yaml
-
-- hosts: all
-  roles:
-    - role: common

@@ -1,0 +1,4 @@
+k8s_cluster_name: case-bunyamin-dokmetas.abc
+k8s_kube_network_plugin: flannel
+k8s_dns_mode: coredns
+k8s_kubespray_version: 2.18.0

@@ -1,0 +1,7 @@
+---
+- name: Pull kubespray from Git
+  host: server-0
+  git:
+    repo: https://github.com/kubernetes-sigs/kubespray.git
+    single_branch: yes
+    version: v{{ k8s_kubespray_version }}
