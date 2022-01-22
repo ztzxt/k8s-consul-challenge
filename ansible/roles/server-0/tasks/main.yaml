@@ -9,6 +9,7 @@
     repo: https://github.com/kubernetes-sigs/kubespray.git
     version: v{{ k8s_kubespray_version }}
     dest: ~/kubespray
+    force: yes
 
 - name: Create inventory
   template:
