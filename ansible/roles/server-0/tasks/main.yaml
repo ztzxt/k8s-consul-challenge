@@ -1,4 +1,9 @@
 ---
+- name: Install Git
+  yum:
+    name: git
+    state: latest
+
 - name: Pull kubespray from Git
   git:
     repo: https://github.com/kubernetes-sigs/kubespray.git
