@@ -1,6 +1,5 @@
 ---
 - name: Pull kubespray from Git
-  host: all
   git:
     repo: https://github.com/kubernetes-sigs/kubespray.git
     single_branch: yes
