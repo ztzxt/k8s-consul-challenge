@@ -1,0 +1,5 @@
+---
+- name: Upgrade all nodes before start
+  yum:
+    name: '*'
+    state: latest
