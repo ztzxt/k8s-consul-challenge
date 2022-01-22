@@ -2,5 +2,4 @@
 - name: Pull kubespray from Git
   git:
     repo: https://github.com/kubernetes-sigs/kubespray.git
-    single_branch: yes
     version: v{{ k8s_kubespray_version }}
