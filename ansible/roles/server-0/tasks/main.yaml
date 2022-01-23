@@ -43,7 +43,11 @@
     url: https://get.helm.sh/helm-v{{ helm_version }}-linux-amd64.tar.gz
     dest: /root/helm-v{{ helm_version }}-linux-amd64.tar.gz
     checksum: sha256:https://get.helm.sh/helm-v{{ helm_version }}-linux-amd64.tar.gz.sha256sum
-  notify: Extract helm
+
+- name: Create directory for helm untar
+  file:
+    path: /root/helm
+    state: directory
 
 - name: Extract helm tar
   unarchive:
