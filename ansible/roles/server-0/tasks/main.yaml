@@ -52,7 +52,7 @@
     patch:
       - op: add
         path: /metadata/labels/prometheus
-        values: yes
+        value: yes
 
 - name: Get helm tar
   get_url:
