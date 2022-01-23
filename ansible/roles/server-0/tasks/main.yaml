@@ -49,3 +49,4 @@
     src: /root/helm-v{{ helm_version }}-linux-amd64.tar.gz
     dest: /usr/local/bin
     include: linux-amd64/helm
+    creates: /usr/local/bin/helm
