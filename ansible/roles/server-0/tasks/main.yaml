@@ -33,6 +33,7 @@
 - name: Check if cluster ready
   uri:
     url: https://localhost:6433/readyz
+    return_content: yes
   register: k8s_ready
 
 - name: See register's values
@@ -44,7 +45,7 @@
   command:
     cmd: ansible-playbook -i inventory/sample/inventory.ini  --become --become-user=root cluster.yml
     chdir: /root/kubespray
-  when: k8s_ready
+  when: k8s_ready.content != 'ok'
 
 - name: Get helm tar
   get_url:
