@@ -46,14 +46,13 @@
   when: k8s_ready.content != 'ok'
 
 - name: Set label for worker node
-  kubernetes.core.k8s:
-    state: patched
+  kubernetes.core.k8s_json_patch:
     kind: Node
     name: server-1
-    definition:
-      metadata:
-        labels:
-          prometheus: yes
+    patch:
+      - op: add
+        path: /metadata/labels/prometheus
+        values: yes
 
 - name: Get helm tar
   get_url:
