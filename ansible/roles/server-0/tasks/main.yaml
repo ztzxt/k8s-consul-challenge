@@ -35,4 +35,4 @@
     cmd: ansible-playbook -i inventory/sample/inventory.ini  --become --become-user=root cluster.yml
     creates: /usr/local/bin/kubectl
     chdir: /root/kubespray
-  register: kubespray-logs
+  register: kubespray_logs
