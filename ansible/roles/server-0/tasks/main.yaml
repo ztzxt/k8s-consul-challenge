@@ -43,13 +43,16 @@
     url: https://get.helm.sh/helm-v{{ helm_version }}-linux-amd64.tar.gz
     dest: /root/helm-v{{ helm_version }}-linux-amd64.tar.gz
     checksum: sha256:https://get.helm.sh/helm-v{{ helm_version }}-linux-amd64.tar.gz.sha256sum
+  notify: Extract helm
 
 - name: Extract helm tar
   unarchive:
     src: /root/helm-v{{ helm_version }}-linux-amd64.tar.gz
-    dest: /usr/local/bin
-    creates: /usr/local/bin/helm
-    exclude:
-      - linux-amd64/LICENSE
-      - linux-amd64/README.md
-      - linux-amd64
+    dest: /root/helm
+    creates: /root/helm/linux-amd64/helm
+
+- name: Copy helm binary
+  copy:
+    src: /root/helm/linux-amd64/helm
+    remote_src: yes
+    dest: /usr/local/bin/helm
