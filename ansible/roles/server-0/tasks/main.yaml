@@ -38,11 +38,6 @@
   register: k8s_ready
   ignore_errors: true
 
-- name: Test ignore_errors
-  uri:
-    url: http://localhost:35000
-  ignore_errors: true
-
 - name: Install k8s with kubespray
   #Find alternatives, run all of the roles as another kubespray role? Use ansible import/include?
   command:
