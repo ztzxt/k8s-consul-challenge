@@ -34,6 +34,8 @@
   uri:
     url: https://localhost:6433/readyz
     return_content: yes
+    validate_certs: no
+    follow_redirects: all
   register: k8s_ready
 
 - name: See register's values
