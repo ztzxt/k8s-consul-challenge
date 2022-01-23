@@ -1,14 +1,11 @@
 ---
-- name: Install Git
-  yum:
-    name: git
-    state: latest
-
 - name: Pull kubespray from Git
   git:
     repo: https://github.com/kubernetes-sigs/kubespray.git
     version: v{{ k8s_kubespray_version }}
     dest: ~/kubespray
+    #Descreases idempotency, might improve this later.
+    force: yes
 
 - name: Create inventory
   template:
