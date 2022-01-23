@@ -1,5 +1,5 @@
 ---
 - name: Upgrade all nodes before start
-  dnf:
+  yum:
     name: '*'
     state: latest
