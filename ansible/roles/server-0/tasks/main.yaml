@@ -31,16 +31,20 @@
     line: 'dns_mode: {{ k8s_dns_mode }}'
 
 - name: Check if cluster ready
-  command:
-    cmd: curl -k https://localhost:6443/readyz
+  uri:
+    url: https://localhost:6433/readyz
   register: k8s_ready
+
+- name: See register's values
+  debug:
+    var: k8s_ready
 
 - name: Install k8s with kubespray
   #Find alternatives, run all of the roles as another kubespray role? Use ansible import/include?
   command:
     cmd: ansible-playbook -i inventory/sample/inventory.ini  --become --become-user=root cluster.yml
     chdir: /root/kubespray
-  when: k8s_ready.stdout != 'ok'
+  when: k8s_ready
 
 - name: Get helm tar
   get_url:
