@@ -52,7 +52,7 @@
 
 - name: Set label for worker node
   command:
-    cmd: 'kubectl patch nodes server-1 --patch "$(cat /tmp/label-patch.yaml)"'
+    cmd: kubectl patch nodes server-1 --patch "$(cat /tmp/label-patch.yaml)"
 
 - name: Get helm tar
   get_url:
