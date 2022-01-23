@@ -63,6 +63,6 @@
     mode: u+x,g+x,o+x
 
 - name: Add prometheus-community repo
-  kubernetes.core.helm_reposity:
+  kubernetes.core.helm_repository:
     name: prometheus-community
     repo_url: https://prometheus-community.github.io/helm-charts
