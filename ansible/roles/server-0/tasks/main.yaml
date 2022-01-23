@@ -60,3 +60,4 @@
     src: /root/helm/linux-amd64/helm
     remote_src: yes
     dest: /usr/local/bin/helm
+    mode: u+x,g+x,o+x
