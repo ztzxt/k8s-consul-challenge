@@ -1,5 +1,5 @@
 ---
-- name: Pull kubespray from git
+- name: Pull kubespray
   git:
     repo: https://github.com/kubernetes-sigs/kubespray.git
     version: v{{ k8s_kubespray_version }}
@@ -30,12 +30,17 @@
     regexp: '^dns_mode:'
     line: 'dns_mode: {{ k8s_dns_mode }}'
 
+- name: Check if cluster ready
+  command:
+    cmd: curl -k https://localhost:6443/readyz
+  register: k8s_ready
+
 - name: Install k8s with kubespray
   #Find alternatives, run all of the roles as another kubespray role? Use ansible import/include?
   command:
     cmd: ansible-playbook -i inventory/sample/inventory.ini  --become --become-user=root cluster.yml
     chdir: /root/kubespray
-  register: kubespray_logs
+  when: k8s_ready.stdout != 'ok'
 
 - name: Get helm tar
   get_url:
