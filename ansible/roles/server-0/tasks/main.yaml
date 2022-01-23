@@ -32,7 +32,7 @@
 
 - name: Install k8s with kubespray
   #Find alternatives, run all of the roles as another kubespray role? Use ansible import/include?
-  shell:
+  command:
     cmd: ansible-playbook -i inventory/sample/inventory.ini  --become --become-user=root cluster.yml
     chdir: /root/kubespray
   register: kubespray_logs
