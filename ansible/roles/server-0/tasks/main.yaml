@@ -52,3 +52,4 @@
     exclude:
       - linux-amd64/LICENSE
       - linux-amd64/README.md
+      - linux-amd64
