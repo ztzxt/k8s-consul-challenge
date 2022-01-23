@@ -31,8 +31,15 @@
     line: 'dns_mode: {{ k8s_dns_mode }}'
 
 - name: Install k8s with kubespray
+  #Find alternatives, run all of the roles as another kubespray role? Use ansible import/include?
   shell:
     cmd: ansible-playbook -i inventory/sample/inventory.ini  --become --become-user=root cluster.yml
     creates: /usr/local/bin/kubectl
     chdir: /root/kubespray
   register: kubespray_logs
+
+- name: Get Helm tar
+  get_url:
+    url: https://get.helm.sh/helm-v{{ helm_version }}-linux-amd64.tar.gz
+    dest: /root/helm-v{{ helm_version }}-linux-amd64.tar.gz
+    checksum: sha256:https://get.helm.sh/helm-v{{ helm_version }}-linux-amd64.tar.gz.sha256sum
