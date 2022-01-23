@@ -45,6 +45,16 @@
     chdir: /root/kubespray
   when: k8s_ready.content != 'ok'
 
+- name: Set label for worker node
+  kubernetes.core.k8s:
+    state: patched
+    kind: Node
+    name: server-1
+    definition:
+      metadata:
+        labels:
+          prometheus: yes
+
 - name: Get helm tar
   get_url:
     url: https://get.helm.sh/helm-v{{ helm_version }}-linux-amd64.tar.gz
