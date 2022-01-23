@@ -1,5 +1,5 @@
 ---
-- name: Pull kubespray from Git
+- name: Pull kubespray from git
   git:
     repo: https://github.com/kubernetes-sigs/kubespray.git
     version: v{{ k8s_kubespray_version }}
@@ -24,7 +24,7 @@
     regexp: '^kube_network_plugin:'
     line: 'kube_network_plugin: {{ k8s_kube_network_plugin }}'
 
-- name: Set DNS mode
+- name: Set dns mode
   lineinfile:
     path:  /root/kubespray/inventory/sample/group_vars/k8s_cluster/k8s-cluster.yml
     regexp: '^dns_mode:'
@@ -38,8 +38,14 @@
     chdir: /root/kubespray
   register: kubespray_logs
 
-- name: Get Helm tar
+- name: Get helm tar
   get_url:
     url: https://get.helm.sh/helm-v{{ helm_version }}-linux-amd64.tar.gz
     dest: /root/helm-v{{ helm_version }}-linux-amd64.tar.gz
     checksum: sha256:https://get.helm.sh/helm-v{{ helm_version }}-linux-amd64.tar.gz.sha256sum
+
+- name: Extract helm tar
+  unarchive:
+    src: /root/helm-v{{ helm_version }}-linux-amd64.tar.gz
+    dest: /usr/local/bin
+    include: linux-amd64/helm
