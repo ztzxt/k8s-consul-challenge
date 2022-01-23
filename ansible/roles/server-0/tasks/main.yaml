@@ -77,3 +77,9 @@
   kubernetes.core.helm_repository:
     name: prometheus-community
     repo_url: https://prometheus-community.github.io/helm-charts
+
+- name: Insall chart
+  kubernetes.core.helm:
+    name: prometheus
+    namespace: monitoring
+    chart_ref: prometheus-community/prometheus
