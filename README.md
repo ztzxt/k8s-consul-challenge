@@ -12,5 +12,3 @@ Clone this repo
 Intall requirements.txt
 
     pip3 install -r requirements.txt
-
-    pip install kubernetes==12.0.0

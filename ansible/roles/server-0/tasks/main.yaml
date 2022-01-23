@@ -45,35 +45,30 @@
     chdir: /root/kubespray
   when: k8s_ready.content != 'ok'
 
+- name: Copy patch
+  copy:
+    src: label-patch.yaml
+    dest: /tmp/label-patch.yaml
+
 - name: Set label for worker node
-  kubernetes.core.k8s_json_patch:
-    kind: Node
-    name: server-1
-    patch:
-      - op: add
-        path: /metadata/labels/prometheus
-        value: yes
+  commmand:
+    cmd: 'kubectl patch nodes server-1 --patch "$(cat /tmp/label-patch.yaml)"'
 
 - name: Get helm tar
   get_url:
     url: https://get.helm.sh/helm-v{{ helm_version }}-linux-amd64.tar.gz
-    dest: /root/helm-v{{ helm_version }}-linux-amd64.tar.gz
+    dest: /tmp/helm-v{{ helm_version }}-linux-amd64.tar.gz
     checksum: sha256:https://get.helm.sh/helm-v{{ helm_version }}-linux-amd64.tar.gz.sha256sum
-
-- name: Create directory for helm untar
-  file:
-    path: /root/helm
-    state: directory
 
 - name: Extract helm tar
   unarchive:
-    src: /root/helm-v{{ helm_version }}-linux-amd64.tar.gz
-    dest: /root/helm
-    creates: /root/helm/linux-amd64/helm
+    src: /tmp/helm-v{{ helm_version }}-linux-amd64.tar.gz
+    dest: /tmp
+    creates: /tmp/linux-amd64/helm
 
 - name: Copy helm binary
   copy:
-    src: /root/helm/linux-amd64/helm
+    src: /tmp/linux-amd64/helm
     remote_src: yes
     dest: /usr/local/bin/helm
     mode: u+x,g+x,o+x
