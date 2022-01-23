@@ -17,3 +17,15 @@
     path:  /root/kubespray/inventory/sample/group_vars/k8s_cluster/k8s-cluster.yml
     regexp: '^cluster_name:'
     line: 'cluster_name: {{ k8s_cluster_name }}'
+
+- name: Set network plugin
+  lineinfile:
+    path:  /root/kubespray/inventory/sample/group_vars/k8s_cluster/k8s-cluster.yml
+    regexp: '^kube_network_plugin:'
+    line: 'kube_network_plugin: {{ k8s_kube_network_plugin }}'
+
+- name: Set DNS mode
+  lineinfile:
+    path:  /root/kubespray/inventory/sample/group_vars/k8s_cluster/k8s-cluster.yml
+    regexp: '^dns_mode:'
+    line: 'dns_mode: {{ k8s_dns_mode }}'
