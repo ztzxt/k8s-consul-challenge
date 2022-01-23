@@ -83,3 +83,4 @@
     name: prometheus
     namespace: monitoring
     chart_ref: prometheus-community/prometheus
+    create_namespace: yes
