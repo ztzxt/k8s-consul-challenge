@@ -11,3 +11,9 @@
   template:
     src: templates/inventory.ini.j2
     dest: ~/kubespray/inventory/sample/inventory.ini
+
+- name: Set cluster name
+  lineinfile:
+    path:  /root/kubespray/inventory/sample/group_vars/k8s_cluster/k8s-cluster.yml
+    regexp: '^cluster_name:'
+    line: 'cluster_name: {{ k8s_cluster_name }}'
