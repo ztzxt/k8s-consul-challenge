@@ -78,34 +78,17 @@
     name: prometheus-community
     repo_url: https://prometheus-community.github.io/helm-charts
 
+- name: Get prometheus values
+  copy:
+    src: prometheus-values.yaml
+    dest: /tmp/prometheus-values.yaml
+
 - name: Insall chart
   kubernetes.core.helm:
     name: prometheus
     namespace: monitoring
     chart_ref: prometheus-community/prometheus
     create_namespace: yes
-    values:
-      alermanager:
-        enabled: false
-      pushgateway:
-        enabled: false
-      kubeStateMetrics:
-        kube-state-metrics:
-          nodeSelector:
-            prometheus_isolation: enabled
-          tolerations:
-            - key: node-role.kubernetes.io/master
-              effect: NoSchedule
-      server:
-        nodeSelector:
-          prometheus_isolation: enabled
-        tolerations:
-          - key: node-role.kubernetes.io/master
-            effect: NoSchedule
-      nodeExporter:
-        nodeSelector:
-          prometheus_isolation: enabled
-        tolerations:
-          - key: node-role.kubernetes.io/master
-            effect: NoSchedule
+    values_files:
+      - /tmp/prometheus-values.yaml
             

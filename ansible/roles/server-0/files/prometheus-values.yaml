@@ -1,0 +1,23 @@
+alermanager:
+  enabled: false
+pushgateway:
+  enabled: false
+kubeStateMetrics:
+  kube-state-metrics:
+    nodeSelector:
+      prometheus_isolation: enabled
+    tolerations:
+      - key: node-role.kubernetes.io/master
+        effect: NoSchedule
+server:
+  nodeSelector:
+    prometheus_isolation: enabled
+  tolerations:
+    - key: node-role.kubernetes.io/master
+      effect: NoSchedule
+nodeExporter:
+  nodeSelector:
+    prometheus_isolation: enabled
+  tolerations:
+    - key: node-role.kubernetes.io/master
+      effect: NoSchedule
