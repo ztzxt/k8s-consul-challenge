@@ -2,19 +2,9 @@ alertmanager:
   enabled: false
 pushgateway:
   enabled: false
-kubeStateMetrics:
-  nodeSelector:
-    prometheus_isolation: enabled
-  tolerations:
-    - key: node-role.kubernetes.io/master
-      effect: NoSchedule
 server:
-  nodeSelector:
-    prometheus_isolation: enabled
-  tolerations:
-    - key: node-role.kubernetes.io/master
-      effect: NoSchedule
-nodeExporter:
+  persistentVolume:
+    storageClass: manual
   nodeSelector:
     prometheus_isolation: enabled
   tolerations:
