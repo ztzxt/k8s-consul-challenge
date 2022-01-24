@@ -9,7 +9,7 @@
 
 - name: Create inventory
   template:
-    src: templates/inventory.ini.j2
+    src: inventory.ini.j2
     dest: /root/kubespray/inventory/sample/inventory.ini
 
 - name: Set cluster name
@@ -45,14 +45,14 @@
     chdir: /root/kubespray
   when: k8s_ready.content != 'ok'
 
-- name: Copy patch
-  copy:
-    src: label-patch.yaml
+- name: Create patch for node labes
+  template:
+    src: label-patch.yaml.j2
     dest: /tmp/label-patch.yaml
 
 - name: Set label for worker node
   shell:
-    cmd: kubectl patch nodes server-1 --patch "$(cat /tmp/label-patch.yaml)"
+    cmd: kubectl patch nodes server-0 --patch "$(cat /tmp/label-patch.yaml)"
 
 - name: Get helm tar
   get_url:
@@ -84,3 +84,28 @@
     namespace: monitoring
     chart_ref: prometheus-community/prometheus
     create_namespace: yes
+    values:
+      alermanager:
+        enabled: false
+      pushgateway:
+        enabled: false
+      kubeStateMetrics:
+        kube-state-metrics:
+          nodeSelector:
+            {{ isolation_label }}
+          tolerations:
+            - key: node-role.kubernetes.io/master
+              effect: NoSchedule
+      server:
+        nodeSelector:
+          {{ isolation_label }}
+        tolerations:
+          - key: node-role.kubernetes.io/master
+            effect: NoSchedule
+      nodeExporter:
+        nodeSelector:
+          {{ isolation_label }}
+        tolerations:
+          - key: node-role.kubernetes.io/master
+            effect: NoSchedule
+            

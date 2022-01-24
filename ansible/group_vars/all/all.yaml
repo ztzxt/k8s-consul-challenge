@@ -3,3 +3,4 @@ k8s_kube_network_plugin: flannel
 k8s_dns_mode: coredns
 k8s_kubespray_version: 2.18.0
 helm_version: 3.7.2
+isolation_label: 'prometheus_isolation: enabled'
