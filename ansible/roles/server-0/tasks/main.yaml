@@ -125,3 +125,12 @@
     create_namespace: yes
     values_files:
       - /tmp/nginx-values.yaml
+
+- name: Get prometheus ingress
+  copy:
+    src: prometheus-ingress.yaml
+    dest: /tmp/prometheus-ingress.yaml
+
+- name: Create ingress for prometheus
+  command:
+    cmd: kubectl apply -f /tmp/prometheus-ingress.yaml
