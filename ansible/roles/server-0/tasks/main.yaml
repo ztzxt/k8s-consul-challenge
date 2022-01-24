@@ -46,8 +46,8 @@
   when: k8s_ready.content != 'ok'
 
 - name: Create patch for node labes
-  template:
-    src: label-patch.yaml.j2
+  copy:
+    src: label-patch.yaml
     dest: /tmp/label-patch.yaml
 
 - name: Set label for worker node
@@ -92,19 +92,19 @@
       kubeStateMetrics:
         kube-state-metrics:
           nodeSelector:
-            {{ isolation_label }}: enabled
+            prometheus_isolation: enabled
           tolerations:
             - key: node-role.kubernetes.io/master
               effect: NoSchedule
       server:
         nodeSelector:
-          {{ isolation_label }}: enabled
+          prometheus_isolation: enabled
         tolerations:
           - key: node-role.kubernetes.io/master
             effect: NoSchedule
       nodeExporter:
         nodeSelector:
-          {{ isolation_label }}: enabled
+          prometheus_isolation: enabled
         tolerations:
           - key: node-role.kubernetes.io/master
             effect: NoSchedule
