@@ -3,12 +3,11 @@ alertmanager:
 pushgateway:
   enabled: false
 kubeStateMetrics:
-  kube-state-metrics:
-    nodeSelector:
-      prometheus_isolation: enabled
-    tolerations:
-      - key: node-role.kubernetes.io/master
-        effect: NoSchedule
+  nodeSelector:
+    prometheus_isolation: enabled
+  tolerations:
+    - key: node-role.kubernetes.io/master
+      effect: NoSchedule
 server:
   nodeSelector:
     prometheus_isolation: enabled
