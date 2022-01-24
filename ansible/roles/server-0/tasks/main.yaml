@@ -78,10 +78,16 @@
     name: prometheus-community
     repo_url: https://prometheus-community.github.io/helm-charts
 
+- name: Add ingress-nginx helm repos
+  kubernetes.core.helm_repository:
+    name: ingress-nginx
+    repo_url: https://kubernetes.github.io/ingress-nginx
+
 - name: Create prometheus data dir
   file:
     state: directory
     path: /prometheus-data
+    mode: o+w
 
 - name: Get prometheus PV yaml
   copy:
@@ -97,7 +103,7 @@
     src: prometheus-values.yaml
     dest: /tmp/prometheus-values.yaml
 
-- name: Insall chart
+- name: Insall prometheus chart
   kubernetes.core.helm:
     name: prometheus
     namespace: monitoring
@@ -105,3 +111,17 @@
     create_namespace: yes
     values_files:
       - /tmp/prometheus-values.yaml
+
+- name: Get nginx ingress controller values
+  copy:
+    src: nginx-values.yaml
+    dest: /tmp/nginx-values.yaml
+
+- name: Insall nginx chart
+  kubernetes.core.helm:
+    name: ingress-nginx
+    namespace: ingress-nginx
+    chart_ref: ingress-nginx/ingress-nginx
+    create_namespace: yes
+    values_files:
+      - /tmp/nginx-values.yaml
