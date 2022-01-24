@@ -92,19 +92,19 @@
       kubeStateMetrics:
         kube-state-metrics:
           nodeSelector:
-            "{{ isolation_label }}"
+            {{ isolation_label }}: enabled
           tolerations:
             - key: node-role.kubernetes.io/master
               effect: NoSchedule
       server:
         nodeSelector:
-          "{{ isolation_label }}"
+          {{ isolation_label }}: enabled
         tolerations:
           - key: node-role.kubernetes.io/master
             effect: NoSchedule
       nodeExporter:
         nodeSelector:
-          "{{ isolation_label }}"
+          {{ isolation_label }}: enabled
         tolerations:
           - key: node-role.kubernetes.io/master
             effect: NoSchedule
