@@ -57,6 +57,7 @@
     src: /tmp/prometheus-{{ prometheus_federation_version }}.linux-amd64.tar.gz
     dest: /tmp
     creates: /tmp/prometheus{{ prometheus_federation_version }}.linux-amd64/prometheus
+    remote_src: yes
 
 - name: Create prometheus group
   group:

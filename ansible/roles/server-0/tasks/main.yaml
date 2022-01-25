@@ -65,6 +65,7 @@
     src: /tmp/helm-v{{ helm_version }}-linux-amd64.tar.gz
     dest: /tmp
     creates: /tmp/linux-amd64/helm
+    remote_src: yes
 
 - name: Copy helm binary
   copy:
