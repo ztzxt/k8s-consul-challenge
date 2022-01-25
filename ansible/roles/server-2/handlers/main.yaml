@@ -11,3 +11,5 @@
 - name: Reload prometheus config
   uri:
     url: "localhost:9090/-/reload"
+  retries: 12
+  delay: 5
