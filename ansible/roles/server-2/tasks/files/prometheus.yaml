@@ -1,4 +1,3 @@
-#Example config, used as a placeholder
 global:
   scrape_interval: 15s 
   evaluation_interval: 15s
