@@ -4,3 +4,4 @@
     - role: common
 
 - import_playbook: server-0.yaml
+- import_playbook: server-2.yaml
