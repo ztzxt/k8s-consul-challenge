@@ -12,6 +12,8 @@
   copy:
     src: consule.service
     dest: /etc/systemd/system/consul.service
+  notify:
+    - Restart consul
 
 - name: Replace consul.hcl
   template:
@@ -31,8 +33,7 @@
   command:
     cmd: consul validate /etc/consul.d/
 
-- name: Flush handlers
-  meta: flush_handlers
+- meta: flush_handlers
 
 - name: Get prometheus sha
   uri:
@@ -45,12 +46,77 @@
     cmd: echo "{{ prometheus_gitlab_sha_file.content }}" | grep linux-amd64 | cut -d " " -f 1
   register: prometheus_sha
 
-- name: Debug checksum
-  debug:
-    var: prometheus_sha
-
 - name: Get prometheus tar
   get_url:
     url: https://github.com/prometheus/prometheus/releases/download/v{{ prometheus_federation_version }}/prometheus-{{ prometheus_federation_version }}.linux-amd64.tar.gz
     dest: /tmp/prometheus-{{ prometheus_federation_version }}.linux-amd64.tar.gz
     checksum: sha256:{{ prometheus_sha.stdout }}
+
+- name: Untar prometheus
+  unarchive:
+    src: /tmp/prometheus-{{ prometheus_federation_version }}.linux-amd64.tar.gz
+    dest: /tmp
+    creates: /tmp/prometheus{{ prometheus_federation_version }}.linux-amd64/prometheus
+
+- name: Create prometheus group
+  group:
+    name: prometheus
+    system: true
+    state: present
+
+- name: Create prometheus user
+  user:
+    name: prometheus
+    system: true
+    shell: "/usr/sbin/nologin"
+    group: prometheus
+    createhome: false
+    home: /var/lib/prometheus
+
+- name: Move prometheus binaries
+  copy:
+    src: /tmp/prometheus{{ prometheus_federation_version }}.linux-amd64/{{ item }}
+    remote_src: yes
+    dest: /usr/local/bin/{{ item }}
+    mode: u+x,g+x,o+x
+    owner: prometheus
+    group: prometheus
+  with_items:
+    - prometheus
+    - promtool
+
+- name: Create config dir
+  file:
+    path: /etc/prometheus
+    state: directory
+    owner: prometheus
+    group: prometheus
+
+- name: Create storage dir
+  file:
+    path: /var/lib/prometheus
+    state: directory
+    owner: prometheus
+    group: prometheus
+
+- name: Get prometheus config
+  copy:
+    src: prometheus.yaml
+    dest: /etc/prometheus/prometheus.yaml
+    owner: prometheus
+    group: prometheus
+  notify:
+    - Reload prometheus config
+
+- name: Create prometheus service
+  copy:
+    src: prometheus.service
+    dest: /etc/systemd/system/prometheus.service
+  notify:
+    - Restart prometheus
+
+- name: Validate prometheus config
+  command:
+    cmd: promtool check config /etc/prometheus/prometheus.yaml
+
+- meta: flush_handlers

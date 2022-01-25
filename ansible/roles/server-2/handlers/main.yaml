@@ -2,3 +2,12 @@
   service:
     name: consul
     state: restarted
+
+- name: Restart prometheus
+  service:
+    name: prometheus
+    state: restarted
+
+- name: Reload prometheus config
+  uri:
+    url: "localhost:9090/-/reload"
