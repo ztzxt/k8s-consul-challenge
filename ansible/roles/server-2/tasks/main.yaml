@@ -109,6 +109,17 @@
   notify:
     - Reload prometheus config
 
+- name: Reload prometheus config
+  uri:
+    url: "localhost:9090/-/reload"
+    method: POST
+  register: prometheus_reload
+  ignore_errors: true
+
+- name: Debug config Reload
+  debug:
+    var: prometheus_reload
+
 - name: Create prometheus service
   copy:
     src: prometheus.service

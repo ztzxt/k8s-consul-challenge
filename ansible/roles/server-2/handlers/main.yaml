@@ -9,11 +9,3 @@
     name: prometheus
     state: restarted
     daemon_reload: yes
-
-- name: Reload prometheus config
-  uri:
-    url: "localhost:9090/-/reload"
-    method: POST
-  register: prometheus_reload
-  until: prometheus_reload is not failed
-  retries: 12
