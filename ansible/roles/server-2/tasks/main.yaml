@@ -33,3 +33,20 @@
 
 - name: Flush handlers
   meta: flush_handlers
+
+- name: Get prometheus sha
+  uri:
+    url: https://github.com/prometheus/prometheus/releases/download/v{{ prometheus_federation_version }}/sha256sums.txt
+    return_content: yes
+  register: prometheus_gitlab_sha_file
+
+- name: Extract sha
+  command:
+    cmd: echo {{ prometheus_gitlab_sha_file.content }} | grep linux-amd64
+  register: prometheus_sha
+
+- name: Get prometheus tar
+  get_url:
+    url: https://github.com/prometheus/prometheus/releases/download/v{{ prometheus_federation_version }}/prometheus-{{ prometheus_federation_version }}.linux-amd64.tar.gz
+    dest: /tmp/prometheus-{{ federation_prometheus_version }}.linux-amd64.tar.gz
+    checksum: sha256:{{ prometheus_sha.stdout }}
