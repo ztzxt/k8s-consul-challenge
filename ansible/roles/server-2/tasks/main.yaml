@@ -48,5 +48,5 @@
 - name: Get prometheus tar
   get_url:
     url: https://github.com/prometheus/prometheus/releases/download/v{{ prometheus_federation_version }}/prometheus-{{ prometheus_federation_version }}.linux-amd64.tar.gz
-    dest: /tmp/prometheus-{{ federation_prometheus_version }}.linux-amd64.tar.gz
+    dest: /tmp/prometheus-{{ prometheus_federation_version }}.linux-amd64.tar.gz
     checksum: sha256:{{ prometheus_sha.stdout }}
