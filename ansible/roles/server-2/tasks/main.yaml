@@ -76,7 +76,7 @@
 
 - name: Move prometheus binaries
   copy:
-    src: /tmp/prometheus{{ prometheus_federation_version }}.linux-amd64/{{ item }}
+    src: /tmp/prometheus-{{ prometheus_federation_version }}.linux-amd64/{{ item }}
     remote_src: yes
     dest: /usr/local/bin/{{ item }}
     mode: u+x,g+x,o+x
