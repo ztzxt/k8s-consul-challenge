@@ -111,7 +111,7 @@
 
 - name: Reload prometheus config
   uri:
-    url: "localhost:9090/-/reload"
+    url: "http://localhost:9090/-/reload"
     method: POST
   register: prometheus_reload
   ignore_errors: true
