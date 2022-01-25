@@ -1,0 +1,9 @@
+- name: Add hashicorp repo
+  get_url:
+    url: https://rpm.releases.hashicorp.com/RHEL/hashicorp.repo
+    dest: /etc/yum.repos.d/hashicorp.repo
+
+- name: Install consul
+  yum:
+    name: consul
+    state: installed
