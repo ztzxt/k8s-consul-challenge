@@ -42,8 +42,12 @@
 
 - name: Extract sha
   command:
-    cmd: echo {{ prometheus_gitlab_sha_file.content }} | grep linux-amd64
+    cmd: echo {{ prometheus_gitlab_sha_file.content }} | grep linux-amd64 | cut -d " " -f 1
   register: prometheus_sha
+
+- name: Debug checksum
+  debug:
+    var: prometheus_sha
 
 - name: Get prometheus tar
   get_url:
