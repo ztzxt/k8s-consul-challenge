@@ -10,7 +10,7 @@
 
 - name: Create systemd service for consule
   copy:
-    src: consule.service
+    src: consul.service
     dest: /etc/systemd/system/consul.service
   notify:
     - Restart consul
