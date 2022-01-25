@@ -15,6 +15,5 @@
     url: "http://localhost:9090/-/reload"
     method: POST
   register: prometheus_reload
-  ignore_errors: true
   until: prometheus_reload is not failed
   retries: 10
