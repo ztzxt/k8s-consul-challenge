@@ -1,12 +1,14 @@
 - name: Restart consul
-  service:
+  systemd:
     name: consul
     state: restarted
+    daemon_reload: yes
 
 - name: Restart prometheus
-  service:
+  systemd:
     name: prometheus
     state: restarted
+    daemon_reload: yes
 
 - name: Reload prometheus config
   uri:
