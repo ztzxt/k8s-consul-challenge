@@ -7,3 +7,29 @@
   yum:
     name: consul
     state: installed
+
+- name: Create systemd service for consule
+  copy:
+    src: consule.service
+    dest: /etc/systemd/system/consul.service
+
+- name: Replace consul.hcl
+  template:
+    src: consul.hcl.j2
+    dest: /etc/consul.d/consul.hcl
+  notify:
+    - Restart consul
+
+- name: Add internal prometheus servide definition
+  copy:
+    src: prometheus-internal.hcl
+    dest: /etc/consul.d/prometheus-internal.hcl
+  notify:
+    - Restart consul
+
+- name: Validate consul config
+  command:
+    cmd: consul validate /etc/consul.d/
+
+- name: Flush handlers
+  meta: flush_handlers
