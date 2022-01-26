@@ -8,7 +8,8 @@ scrape_configs:
 
     params:
       'match[]':
-      - '{__name__=~".+"}'
+      - 'machine_cpu_cores'
+      - 'node_cpu_seconds_total'
     consul_sd_configs:
       - services:
         - 'prometheus-int'
