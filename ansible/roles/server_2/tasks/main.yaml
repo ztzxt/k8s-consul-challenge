@@ -129,4 +129,5 @@
 
 - name: Install grafana
   yum:
-    name: grafana-enterprise
+    name: grafana
+    state: installed
