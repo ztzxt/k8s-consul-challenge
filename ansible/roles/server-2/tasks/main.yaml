@@ -131,6 +131,8 @@
   yum:
     name: grafana
     state: installed
+
+- name: Start grafana service
   service:
     name: grafana-server
     state: started
