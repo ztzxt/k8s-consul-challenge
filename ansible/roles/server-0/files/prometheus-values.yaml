@@ -2,6 +2,10 @@ alertmanager:
   enabled: false
 pushgateway:
   enabled: false
+nodeExporter:
+  tolerations:
+    - key: node-role.kubernetes.io/master
+      effect: NoSchedule
 server:
   persistentVolume:
     storageClass: manual
