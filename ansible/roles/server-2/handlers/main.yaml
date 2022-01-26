@@ -17,3 +17,8 @@
   register: prometheus_reload
   until: prometheus_reload is not failed
   retries: 10
+
+- name: Restart grafana
+  systemd:
+    name: grafana-server
+    state: restarted

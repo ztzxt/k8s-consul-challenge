@@ -129,10 +129,15 @@
 
 - name: Install grafana
   yum:
-    name: grafana
+    name: grafana-enterprise
     state: installed
 
-- name: Start grafana service
-  service:
-    name: grafana-server
-    state: started
+- name: Change admin password
+  command:
+    cmd: grafana-cli admin reset-admin-password {{ grafana_admin_password }}
+
+- name: Add promethes datasources
+  copy:
+    src: prometheus-datasource.yaml
+    dest: /etc/grafana/provisioning/datasources/prometheus.yaml
+  notify: Restart prometheus
