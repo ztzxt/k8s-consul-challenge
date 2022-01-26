@@ -140,4 +140,4 @@
   copy:
     src: prometheus-datasource.yaml
     dest: /etc/grafana/provisioning/datasources/prometheus.yaml
-  notify: Restart prometheus
+  notify: Restart grafana
