@@ -1,0 +1,4 @@
+---
+- hosts: server_0
+  roles:
+    - role: server_0

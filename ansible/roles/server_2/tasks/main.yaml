@@ -121,3 +121,5 @@
     cmd: promtool check config /etc/prometheus/prometheus.yaml
 
 - meta: flush_handlers
+
+#Install Grafana
