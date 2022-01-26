@@ -141,3 +141,8 @@
     src: prometheus-datasource.yaml
     dest: /etc/grafana/provisioning/datasources/prometheus.yaml
   notify: Restart grafana
+
+- name: Add cpu metrics dashboard
+  copy:
+    src: cluster-metrics.json
+    dest: /etc/grafana/provisioning/dashboards/cluster-cpu-metrics.json
