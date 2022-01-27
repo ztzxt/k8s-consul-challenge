@@ -47,8 +47,8 @@
     - Restart elasticsearch
 
 - name: Get elasticsearch config
-  copy:
-    src: elasticsearch.yml
+  template:
+    src: elasticsearch.yml.j2
     dest: /etc/elasticsearch/elasticsearch.yml
   notify:
     - Restart elasticsearch
