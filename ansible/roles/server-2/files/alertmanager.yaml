@@ -3,5 +3,6 @@ route:
   group_wait: 30s
   group_interval: 5m
   repeat_interval: 1h
+  receiver: dummy
 receivers:
-  - name: 'dummy'
+  - name: dummy
