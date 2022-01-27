@@ -20,3 +20,8 @@
 - name: Reconfigure gitlab
   command:
     cmd: gitlab-ctl reconfigure
+
+- name: Create gitlab token
+  shell:
+    cmd: "gitlab-rails runner \"token = User.find_by_username('root').personal_access_tokens.create(scopes: [:api, :write_repository], name: '{{ ansible_date_time.iso8601 }}'); token.set_token('{{ gitlab_token }}'); token.save!\""
+  ignore_errors: true

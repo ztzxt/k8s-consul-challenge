@@ -121,6 +121,8 @@
   environment:
     EXTERNAL_URL: "http://{{ hostvars['server-3']['ansible_host'] }}"
     GITLAB_ROOT_PASSWORD: "{{ gitlab_password }}"
+  notify:
+    - Create gitlab token
 
 - name: Check if gitlab is ready
   uri:
@@ -134,23 +136,12 @@
     cmd: gitlab-ctl reconfigure
   when: gitlab_ready.failed
 
-- name: Revoke token if exists
-  shell:
-    cmd: "gitlab-rails runner \"PersonalAccessToken.find_by_token('{{ gitlab_token }}').revoke!\""
-
-- name: Create gitlab token
-  shell:
-    cmd: "gitlab-rails runner \"token = User.find_by_username('root').personal_access_tokens.create(scopes: [:api, :write_repository], name: '{{ ansible_date_time.iso8601 }}'); token.set_token('{{ gitlab_token }}'); token.save!\""
-  register: set_gitlab_token
-  ignore_errors: true
-
 - name: Test token
   uri:
     url: "http://localhost/api/v4/projects"
     headers:
       PRIVATE-TOKEN: "{{ gitlab_token }}"
   register: test_token
-  ignore_errors: true
 
 - name: Debug output
   debug:
