@@ -96,6 +96,8 @@
   notify:
     - Restart kibana
 
+- meta: flush_handlers
+
 - name: Create k8s index pattern
   uri:
     url: http://{{ hostvars['server-3']['ansible_host'] }}:5601/api/saved_objects/index-pattern/k8s-*?overwrite=true
