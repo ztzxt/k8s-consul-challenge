@@ -13,6 +13,11 @@
     path: /etc/elasticsearch
     state: absent
 
+- name: Clear /var/lib/elasticsearch
+  file:
+    path: /var/lib/elasticsearch
+    state: absent
+
 - name: Install elasticsearch and kibana
   yum: 
     name: 
@@ -39,7 +44,7 @@
 - name: Ensure elasticsearch is running
   systemd:
     name: elasticsearch
-    state: started
+    state: restarted
 
 - name: Ensure kibana is not running
   systemd:
