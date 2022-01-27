@@ -131,7 +131,7 @@
 - name: Reconfigure gitlab
   command:  
     cmd: gitlab-ctl reconfigure
-  when: when gitlab_ready.failed
+  when: "{{ gitlab_ready.failed }}"
 
 - name: Create gitlab token
   shell:
