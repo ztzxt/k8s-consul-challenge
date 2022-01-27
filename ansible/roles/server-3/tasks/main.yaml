@@ -12,6 +12,20 @@
   notify:
     - Enable services
 
+- name: Apply heap size limit
+  copy:
+    src: heap_size.options
+    dest: /etc/elasticsearch/jvm.options.d/heap_size.options
+  notify:
+    - Restart elasticsearch
+
+- name: Get kibana config
+  copy:
+    src: kibana.yml
+    dest: /etc/kibana/kibana.yml
+  notify:
+    - Restart kibana
+
 #- name: Get elasticsearch config
 #  copy:
 #    src: elasticsearch.yml
@@ -19,9 +33,4 @@
 #  notify:
 #    - Restart elasticsearch
 #
-#- name: Get kibana config
-#  copy:
-#    src: kibana.yml
-#    dest: /etc/kibana/kibana.yml
-#  notify:
-#    - Restart kibana
+
