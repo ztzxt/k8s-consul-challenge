@@ -3,56 +3,56 @@
     src: elasticsearch.repo
     dest: /etc/yum.repos.d/elasticsearch.repo
 
-#- name: Uninstall if elasticsearch or kibana exist
-#  yum:
-#    name:
-#      - elasticsearch
-#      - kibana
-#    state: removed
-#
-#- name: Remove elasticsearch configs
-#  file:
-#    path: /etc/elasticsearch
-#    state: absent
-#
-#- name: Remove kibana configs
-#  file:
-#    path: /etc/kibana
-#    state: absent
-#
-#- name: Clear /var/lib/elasticsearch
-#  file:
-#    path: /var/lib/elasticsearch
-#    state: absent
-#
-#- name: Clear /var/lib/kibana
-#  file:
-#    path: /var/lib/kibana
-#    state: absent
-
-- name: Install elasticsearch and kibana
-  yum: 
-    name: 
+- name: Uninstall if elasticsearch or kibana exist
+  yum:
+    name:
       - elasticsearch
       - kibana
-    state: installed
-  notify:
-    - Enable services
+    state: removed
 
-- name: Apply heap size limit
+- name: Remove elasticsearch configs
+  file:
+    path: /etc/elasticsearch
+    state: absent
+
+- name: Remove kibana configs
+  file:
+    path: /etc/kibana
+    state: absent
+
+- name: Clear /var/lib/elasticsearch
+  file:
+    path: /var/lib/elasticsearch
+    state: absent
+
+- name: Clear /var/lib/kibana
+  file:
+    path: /var/lib/kibana
+    state: absent
+
+#- name: Install elasticsearch and kibana
+#  yum: 
+#    name: 
+#      - elasticsearch
+#      - kibana
+#    state: installed
+#  notify:
+#    - Enable services
+#
+#- name: Apply heap size limit
   copy:
     src: heap_size.options
     dest: /etc/elasticsearch/jvm.options.d/heap_size.options
   notify:
     - Restart elasticsearch
-
-- name: Get elasticsearch config
-  template:
-    src: elasticsearch.yml.j2
-    dest: /etc/elasticsearch/elasticsearch.yml
-  notify:
-    - Restart elasticsearch
-
+#
+#- name: Get elasticsearch config
+#  template:
+#    src: elasticsearch.yml.j2
+#    dest: /etc/elasticsearch/elasticsearch.yml
+#  notify:
+#    - Restart elasticsearch
+#
 #- name: Ensure elasticsearch is running
 #  systemd:
 #    name: elasticsearch
@@ -88,36 +88,36 @@
 #  with_items:
 #    - elastic_password
 #    - kibana_password
-
-- name: Get kibana config
-  copy:
-    src: kibana.yml
-    dest: /etc/kibana/kibana.yml
-  notify:
-    - Restart kibana
-
-- meta: flush_handlers
-
-- name: Create k8s index pattern
-  uri:
-    url: http://{{ hostvars['server-3']['ansible_host'] }}:5601/api/saved_objects/index-pattern/k8s-*?overwrite=true
-    method: POST
-    body_format: json
-    headers:
-      kbn-xsrf: this_is_required_header
-    body:
-      attributes:
-        title: "k8s-*"
-        timeFieldName: "@timestamp"
-
-#- name: Add gitlab repo
-#  copy:
-#    src: gitlab-ee.repo
-#    dest: /etc/yum.repos.d/gitlab-ee.repo
 #
-#- name: Install gitlab
-#  yum:
-#    name: gitlab-ee
-#  environment:
-#    EXTERNAL_URL: "http://{{ hostvars['server-3']['ansible_host'] }}"
-#    GITLAB_ROOT_PASSWORD: "{{ gitlab_password }}"
+#- name: Get kibana config
+#  copy:
+#    src: kibana.yml
+#    dest: /etc/kibana/kibana.yml
+#  notify:
+#    - Restart kibana
+#
+#- meta: flush_handlers
+#
+#- name: Create k8s index pattern
+#  uri:
+#    url: http://{{ hostvars['server-3']['ansible_host'] }}:5601/api/saved_objects/index-pattern/k8s-*?overwrite=true
+#    method: POST
+#    body_format: json
+#    headers:
+#      kbn-xsrf: this_is_required_header
+#    body:
+#      attributes:
+#        title: "k8s-*"
+#        timeFieldName: "@timestamp"
+#
+- name: Add gitlab repo
+  copy:
+    src: gitlab-ee.repo
+    dest: /etc/yum.repos.d/gitlab-ee.repo
+
+- name: Install gitlab
+  yum:
+    name: gitlab-ee
+  environment:
+    EXTERNAL_URL: "http://{{ hostvars['server-3']['ansible_host'] }}"
+    GITLAB_ROOT_PASSWORD: "{{ gitlab_password }}"
