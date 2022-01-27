@@ -148,9 +148,9 @@
 
 - name: Install fluentbit chart
   kubernetes.core.helm:
-    name: fluentbit
+    name: fluent-bit
     namespace: logging
-    chart_ref: fluent/fluentbit
+    chart_ref: fluent/fluent-bit
     create_namespace: yes
     values_files:
       - /tmp/fluentbit-values.yaml
