@@ -122,15 +122,26 @@
     EXTERNAL_URL: "http://{{ hostvars['server-3']['ansible_host'] }}"
     GITLAB_ROOT_PASSWORD: "{{ gitlab_password }}"
 
-- name: Reconfigure gitlab
-  command:  
-    cmd: gitlab-ctl reconfigure
+- name: Check if gitlab is ready
+  uri:
+    url: "http://localhost/-/readiness"
+  register: gitlab_ready
+  ignore_errors: true
 
-- name: Create gitlab token
-  shell:
-    cmd: "gitlab-rails runner \"token = User.find_by_username('root').personal_access_tokens.create(scopes: [:read_user, :read_repository], name: 'Automation token'); token.set_token('{{ gitlab_token }}'); token.save!\""
-  register: set_gitlab_token
-
-- name: Debug gitlab token
+- name: Debug gitlab readiness
   debug:
-    var: set_gitlab_token
+    var: gitlab_ready
+
+#- name: Reconfigure gitlab
+#  command:  
+#    cmd: gitlab-ctl reconfigure
+#  when: when gitlab_ready is
+#
+#- name: Create gitlab token
+#  shell:
+#    cmd: "gitlab-rails runner \"token = User.find_by_username('root').personal_access_tokens.create(scopes: [:read_user, :read_repository], name: 'Automation token'); token.set_token('{{ gitlab_token }}'); token.save!\""
+#  register: set_gitlab_token
+#
+#- name: Debug gitlab token
+#  debug:
+#    var: set_gitlab_token
