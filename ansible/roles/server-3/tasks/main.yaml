@@ -29,6 +29,6 @@
 - name: Get elasticsearch config
   template:
     src: elasticsearch.yml.j2
-    dest: /etc/elasticsearch.yml
+    dest: /etc/elasticsearch/elasticsearch.yml
   notify:
     - Restart elasticsearch
