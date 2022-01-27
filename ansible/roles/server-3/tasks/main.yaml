@@ -151,3 +151,6 @@
       PRIVATE-TOKEN: "{{ gitlab_token }}"
     body:
       name: api-test
+    status_code:
+      - 200
+      - 201
