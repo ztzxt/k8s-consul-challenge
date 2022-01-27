@@ -40,4 +40,6 @@
 - name: Enable services
   systemd:
     name: "{{ item }}"
+    state: running
+    enabled: yes
     with_items: "{{ installed_services }}"
