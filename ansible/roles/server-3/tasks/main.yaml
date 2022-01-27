@@ -148,7 +148,7 @@
   uri:
     url: "http://localhost/api/v4/projects"
     headers:
-      PRIVATE-TOKEN: {{ gitlab_token }}
+      PRIVATE-TOKEN: "{{ gitlab_token }}"
   register: test_token
   ignore_errors: true
 
