@@ -54,11 +54,27 @@
 - name: Generate elasticsearch passwords
   shell:
     cmd: /usr/share/elasticsearch/bin/elasticsearch-setup-passwords auto -v -b
-  register: elasticsearch_generate_passwords
+  register: es_generate_password
 
-- name: Debug generated passwords
+- name: Print output
   debug:
-    var: elasticsearch_generate_passwords
+    var: es_generate_password
+
+- name: Debug password (elastic)
+  shell:
+    cmd: echo "{{ es_generate_password.stdout }}" | grep "PASSWORD elastic"
+  register: elastic_password
+
+- name: Debug password (kibana_system)
+  shell:
+    cmd: echo "{{ es_generate_password.stdout }}" | grep "PASSWORD kibana_system"
+  register: kibana_password
+
+- name: Print passwords
+  debug:
+    var:
+      - elastic_password
+      - kibana_password
 
 - name: Get kibana config
   copy:
@@ -66,7 +82,6 @@
     dest: /etc/kibana/kibana.yml
   notify:
     - Restart kibana
-
 
 - name: Create k8s index pattern
   uri:
