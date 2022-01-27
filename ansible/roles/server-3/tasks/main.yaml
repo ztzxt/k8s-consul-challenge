@@ -142,4 +142,16 @@
   shell:
     cmd: "gitlab-rails runner \"token = User.find_by_username('root').personal_access_tokens.create(scopes: [:api, :write_repository], name: '{{ ansible_date_time.iso8601 }}'); token.set_token('{{ gitlab_token }}'); token.save!\""
   register: set_gitlab_token
+  ignore_errors: true
 
+- name: Test token
+  uri:
+    url: "http://localhost/api/v4/projects"
+    headers:
+      PRIVATE-TOKEN: {{ gitlab_token }}
+  register: test_token
+  ignore_errors: true
+
+- name: Debug output
+  debug:
+    var: test_token
