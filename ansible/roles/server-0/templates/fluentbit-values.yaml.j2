@@ -10,6 +10,7 @@ config:
         Match kube.*
         Host {{ hostvars['server-3']['ansible_host'] }}
         Logstash_Format On
+        Logstah_Prefix k8s-container
         Retry_Limit False
         Replace_Dots On
 
@@ -18,5 +19,5 @@ config:
         Match host.*
         Host {{ hostvars['server-3']['ansible_host'] }}
         Logstash_Format On
-        Logstash_Prefix node
+        Logstash_Prefix k8s-node
         Retry_Limit False
