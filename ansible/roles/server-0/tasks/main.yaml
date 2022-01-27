@@ -104,7 +104,7 @@
     src: prometheus-values.yaml
     dest: /tmp/prometheus-values.yaml
 
-- name: Insall prometheus chart
+- name: Install prometheus chart
   kubernetes.core.helm:
     name: prometheus
     namespace: monitoring
@@ -118,7 +118,7 @@
     src: nginx-values.yaml
     dest: /tmp/nginx-values.yaml
 
-- name: Insall nginx chart
+- name: Install nginx chart
   kubernetes.core.helm:
     name: ingress-nginx
     namespace: ingress-nginx
