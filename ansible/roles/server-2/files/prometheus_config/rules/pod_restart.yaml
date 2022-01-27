@@ -6,9 +6,9 @@ groups:
     for: 5m
     labels:
       severity: critical
-      pod: {{ $labels.pod}}
-      namespace: {{ $labels.namespace }}
-      container: {{ $labels.container }}
-      node: {{ $labels.node }}
+      pod: "{{ $labels.pod }}"
+      namespace: "{{ $labels.namespace }}"
+      container: "{{ $labels.container }}"
+      node: "{{ $labels.node }}"
     annotations:
       summary: Pods restarting frequently
