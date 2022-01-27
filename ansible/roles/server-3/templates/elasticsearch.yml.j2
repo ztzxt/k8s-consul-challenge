@@ -1,6 +1,7 @@
 path.data: /var/lib/elasticsearch
 path.logs: /var/log/elasticsearch
 network.bind_host: 0.0.0.0
-network.publish_host: {{ hostvars['server-3']['ansible_host'] }}
-cluster.initial_master_nodes:
-    - {{ hostvars['server-3']['ansible_host'] }}
+discovery.type: single-node
+#network.publish_host: {{ hostvars['server-3']['ansible_host'] }}
+#cluster.initial_master_nodes:
+#    - {{ hostvars['server-3']['ansible_host'] }}
