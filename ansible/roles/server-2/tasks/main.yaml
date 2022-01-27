@@ -7,6 +7,8 @@
   yum:
     name: consul
     state: installed
+  notify:
+    - Enable services
 
 - name: Create systemd service for consule
   copy:
@@ -22,7 +24,7 @@
   notify:
     - Restart consul
 
-- name: Add internal prometheus servide definition
+- name: Add internal prometheus service definition
   copy:
     src: prometheus-internal.hcl
     dest: /etc/consul.d/prometheus-internal.hcl
@@ -108,12 +110,11 @@
     dest: /etc/systemd/system/prometheus.service
   notify:
     - Restart prometheus
+    - Enable services
 
 - name: Validate prometheus config
   command:
     cmd: promtool check config /etc/prometheus/prometheus.yaml
-
-- meta: flush_handlers
 
 - name: Get grafana repo
   copy:
@@ -124,6 +125,8 @@
   yum:
     name: grafana-enterprise
     state: installed
+  notify:
+    - Eanble services
 
 - name: Change grafana admin password
   command:
@@ -224,5 +227,4 @@
     dest: /etc/systemd/system/alertmanager.service
   notify:
     - Restart alertmanager
-
-- meta: flush_handlers
+    - Enable services

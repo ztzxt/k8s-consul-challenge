@@ -5,3 +5,4 @@
 
 - import_playbook: server-0.yaml
 - import_playbook: server-2.yaml
+- import_playbook: server-3.yaml

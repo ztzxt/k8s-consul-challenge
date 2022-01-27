@@ -36,3 +36,8 @@
   register: alertmanager_reload
   until: alertmanager_reload is not failed
   retries: 10
+
+- name: Enable services
+  systemd:
+    name: {{ item }}
+    with_items: installed_services

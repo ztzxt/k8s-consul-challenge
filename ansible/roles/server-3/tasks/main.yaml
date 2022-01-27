@@ -1,0 +1,28 @@
+- name: Get elastic repo
+  copy:
+    src: elasticsearch.repo
+    dest: /etc/yum.repos.d/elasticsearch.repo
+
+- name: Install elasticsearch and kibana
+  yum: 
+    name: {{ item }}
+    state: installed
+  with_items:
+    - elasticsearch
+    - kibana
+  notify:
+    - Enable services
+
+#- name: Get elasticsearch config
+#  copy:
+#    src: elasticsearch.yml
+#    dest: /etc/elasticsearch.yml
+#  notify:
+#    - Restart elasticsearch
+#
+#- name: Get kibana config
+#  copy:
+#    src: kibana.yml
+#    dest: /etc/kibana/kibana.yml
+#  notify:
+#    - Restart kibana
