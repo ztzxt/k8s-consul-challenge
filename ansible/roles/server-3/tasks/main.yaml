@@ -3,9 +3,11 @@
     src: elasticsearch.repo
     dest: /etc/yum.repos.d/elasticsearch.repo
 
-- name: Uninstall if elasticsearch exist
+- name: Uninstall if elasticsearch or kibana exist
   yum:
-    name: elasticsearch
+    name:
+      - elasticsearch
+      - kibana
     state: removed
 
 - name: Remove elasticsearch configs
@@ -13,9 +15,19 @@
     path: /etc/elasticsearch
     state: absent
 
+- name: Remove kibana configs
+  file:
+    path: /etc/kibana
+    state: absent
+
 - name: Clear /var/lib/elasticsearch
   file:
     path: /var/lib/elasticsearch
+    state: absent
+
+- name: Clear /var/lib/kibana
+  file:
+    path: /var/lib/kibana
     state: absent
 
 - name: Install elasticsearch and kibana
@@ -41,40 +53,41 @@
   notify:
     - Restart elasticsearch
 
-- name: Ensure elasticsearch is running
-  systemd:
-    name: elasticsearch
-    state: restarted
-
-- name: Ensure kibana is not running
-  systemd:
-    name: kibana
-    state: stopped
-
-- name: Generate elasticsearch passwords
-  shell:
-    cmd: /usr/share/elasticsearch/bin/elasticsearch-setup-passwords auto -v -b
-  register: es_generate_password
-
-- name: Print output
-  debug:
-    var: es_generate_password
-
-- name: Debug password (elastic)
-  shell:
-    cmd: echo "{{ es_generate_password.stdout }}" | grep "PASSWORD elastic"
-  register: elastic_password
-
-- name: Debug password (kibana_system)
-  shell:
-    cmd: echo "{{ es_generate_password.stdout }}" | grep "PASSWORD kibana_system"
-  register: kibana_password
-
-- name: Print passwords
-  debug:
-    var:
-      - elastic_password
-      - kibana_password
+#- name: Ensure elasticsearch is running
+#  systemd:
+#    name: elasticsearch
+#    state: restarted
+#
+#- name: Ensure kibana is not running
+#  systemd:
+#    name: kibana
+#    state: stopped
+#
+#- name: Generate elasticsearch passwords
+#  shell:
+#    cmd: /usr/share/elasticsearch/bin/elasticsearch-setup-passwords auto -v -b
+#  register: es_generate_password
+#
+#- name: Print output
+#  debug:
+#    var: es_generate_password
+#
+#- name: Debug password (elastic)
+#  shell:
+#    cmd: echo "{{ es_generate_password.stdout }}" | grep "PASSWORD elastic"
+#  register: elastic_password
+#
+#- name: Debug password (kibana_system)
+#  shell:
+#    cmd: echo "{{ es_generate_password.stdout }}" | grep "PASSWORD kibana_system"
+#  register: kibana_password
+#
+#- name: Print passwords
+#  debug:
+#    var: {{ item }}
+#  with_items:
+#    - elastic_password
+#    - kibana_password
 
 - name: Get kibana config
   copy:
@@ -95,14 +108,14 @@
         title: "k8s-*"
         timeFieldName: "@timestamp"
 
-- name: Add gitlab repo
-  copy:
-    src: gitlab-ee.repo
-    dest: /etc/yum.repos.d/gitlab-ee.repo
-
-- name: Install gitlab
-  yum:
-    name: gitlab-ee
-  environment:
-    EXTERNAL_URL: "http://{{ hostvars['server-3']['ansible_host'] }}"
-    GITLAB_ROOT_PASSWORD: "{{ gitlab_password }}"
+#- name: Add gitlab repo
+#  copy:
+#    src: gitlab-ee.repo
+#    dest: /etc/yum.repos.d/gitlab-ee.repo
+#
+#- name: Install gitlab
+#  yum:
+#    name: gitlab-ee
+#  environment:
+#    EXTERNAL_URL: "http://{{ hostvars['server-3']['ansible_host'] }}"
+#    GITLAB_ROOT_PASSWORD: "{{ gitlab_password }}"

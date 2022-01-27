@@ -1,5 +1,0 @@
-path.data: /var/lib/elasticsearch
-path.logs: /var/log/elasticsearch
-network.bind_host: 0.0.0.0
-discovery.type: single-node
-xpack.security.enabled: true
