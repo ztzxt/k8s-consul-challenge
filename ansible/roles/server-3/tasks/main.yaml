@@ -32,3 +32,20 @@
     dest: /etc/elasticsearch/elasticsearch.yml
   notify:
     - Restart elasticsearch
+
+- name: Create k8s index pattern
+  uri:
+    method: POST
+    headers:
+      kbn-xsrf: this_is_required_header
+    body_format: json
+    body:
+      attributes:
+        title: "k8s-*"
+        timeFieldName: "@timestamp"
+    url: http://{{ hostvars['server-3']['ansible_host'] }}:5601/api/saved_objects/index-pattern/k8s-*?overwrite=true
+  register: kibana_index_pattern
+
+- name: Debug index pattern request
+  debug:
+    var: kibana_index_pattern

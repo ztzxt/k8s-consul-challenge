@@ -1,0 +1,8 @@
+{
+    "attributes":{
+        "title":"k8s-*",
+        "timeFieldName":"@timestamp"
+    }
+}
+
+
