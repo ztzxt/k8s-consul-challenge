@@ -11,7 +11,7 @@ User=alertmanager
 Group=alertmanager
 ExecReload=/bin/kill -HUP $MAINPID
 ExecStart=/usr/local/bin/alertmanager \
-  --config.file=/etc/alertmanager/alertmanager.yml \
+  --config.file=/etc/alertmanager/alertmanager.yaml \
   --storage.path=/var/lib/alertmanager \
   --web.enable-lifecycle
 SyslogIdentifier=alertmanager
