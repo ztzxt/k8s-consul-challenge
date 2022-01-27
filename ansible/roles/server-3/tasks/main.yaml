@@ -44,4 +44,15 @@
       attributes:
         title: "k8s-*"
         timeFieldName: "@timestamp"
-  register: kibana_index_pattern
+
+- name: Add gitlab repo
+  copy:
+    src: gitlab-ee.repo
+    dest: /etc/yum.repos.d/gitlab-ee.repo
+
+- name: Install gitlab
+  yum:
+    name: gitlab-ee
+  environment:
+    EXTERNAL_URL: "http://{{ hostvars['server-3']['ansible_host'] }}"
+    GITLAB_ROOT_PASSWORD: "{{ gitlab_password }}"
