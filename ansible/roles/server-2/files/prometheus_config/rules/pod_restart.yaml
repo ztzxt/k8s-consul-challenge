@@ -1,9 +1,9 @@
 groups:
 - name: pod_restart
   rules:
-  - alert: PodRestartIn2m
-    expr: increase(kube_pod_container_status_restarts_total[2m]) > 0
-    for: 5m
+  - alert: PodRestart
+    expr: increase(kube_pod_container_status_restarts_total[5m]) > 0
+    for: 7m
     labels:
       severity: critical
       pod: "{{ $labels.pod }}"
