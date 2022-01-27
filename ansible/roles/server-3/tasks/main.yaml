@@ -141,8 +141,13 @@
     url: "http://localhost/api/v4/projects"
     headers:
       PRIVATE-TOKEN: "{{ gitlab_token }}"
-  register: test_token
 
-- name: Debug output
-  debug:
-    var: test_token
+- name: Create project
+  uri:
+    url: "http://localhost/api/v4/projects"
+    method: POST
+    body_format: json
+    headers:
+      PRIVATE-TOKEN: "{{ gitlab_token }}"
+    body:
+      name: api-test
