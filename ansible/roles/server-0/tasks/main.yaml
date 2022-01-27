@@ -135,3 +135,22 @@
 - name: Create ingress for prometheus
   command:
     cmd: kubectl apply -f /tmp/prometheus-ingress.yaml
+
+- name: Add fluent helm repo
+  kubernetes.core.helm_repository:
+    name: fluent
+    repo_url: https://fluent.github.io/helm-charts
+
+- name: Get fluentbit values
+  copy:
+    src: fluentbit-values.yaml
+    dest: /tmp/fluentbit-values.yaml
+
+- name: Install fluentbit chart
+  kubernetes.core.helm:
+    name: fluentbit
+    namespace: logging
+    chart_ref: fluent/fluentbit
+    create_namespace: yes
+    values_files:
+      - /tmp/fluentbit-values.yaml

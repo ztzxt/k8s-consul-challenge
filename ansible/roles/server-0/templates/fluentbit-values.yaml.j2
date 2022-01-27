@@ -1,0 +1,22 @@
+#image:
+#  tag: "1.8.10"
+tolerations:
+  - key: node-role.kubernetes.io/master
+    effect: NoSchedule
+config:
+  outputs: |
+    [OUTPUT]
+        Name es
+        Match kube.*
+        Host {{ hostvars['server-3']['ansible_host'] }}
+        Logstash_Format On
+        Retry_Limit False
+        Replace_Dots On
+
+    [OUTPUT]
+        Name es
+        Match host.*
+        Host {{ hostvars['server-3']['ansible_host'] }}
+        Logstash_Format On
+        Logstash_Prefix node
+        Retry_Limit False
