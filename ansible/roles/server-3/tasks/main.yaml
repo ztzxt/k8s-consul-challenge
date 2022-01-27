@@ -53,7 +53,7 @@
 
 - name: Generate elasticsearch passwords
   shell:
-    cmd: /usr/share/elasticsearch/bin/elasticsearch-setup-passwords auto -v
+    cmd: /usr/share/elasticsearch/bin/elasticsearch-setup-passwords auto -v -b
   register: elasticsearch_generate_passwords
 
 - name: Debug generated passwords
