@@ -5,11 +5,10 @@
 
 - name: Install elasticsearch and kibana
   yum: 
-    name: "{{ item }}"
+    name: 
+      - elasticsearch
+      - kibana
     state: installed
-  with_items:
-    - elasticsearch
-    - kibana
   notify:
     - Enable services
 

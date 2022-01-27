@@ -9,3 +9,9 @@
     name: kibana
     state: restarted
     daemon_reload: yes
+
+- name: Enable services
+  systemd:
+    name: '{{ item }}'
+    state: enabled
+  with_ items: '{{ installed_services }}'
