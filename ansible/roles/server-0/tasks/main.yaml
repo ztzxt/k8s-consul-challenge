@@ -143,7 +143,7 @@
 
 - name: Get fluentbit values
   template:
-    src: fluentbit-values.yaml
+    src: fluentbit-values.yaml.j2
     dest: /tmp/fluentbit-values.yaml
 
 - name: Install fluentbit chart
