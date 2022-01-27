@@ -27,8 +27,8 @@
     - Restart kibana
 
 - name: Get elasticsearch config
-  template:
-    src: elasticsearch.yml.j2
+  copy:
+    src: elasticsearch.yml
     dest: /etc/elasticsearch/elasticsearch.yml
   notify:
     - Restart elasticsearch
@@ -45,4 +45,3 @@
         title: "k8s-*"
         timeFieldName: "@timestamp"
   register: kibana_index_pattern
-
