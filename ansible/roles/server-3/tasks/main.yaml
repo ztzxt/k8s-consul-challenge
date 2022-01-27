@@ -3,6 +3,16 @@
     src: elasticsearch.repo
     dest: /etc/yum.repos.d/elasticsearch.repo
 
+- name: Uninstall if elasticsearch exist
+  yum:
+    name: elasticsearch
+    state: removed
+
+- name: Remove elasticsearch configs
+  file:
+    path: /etc/elasticsearch
+    state: absent
+
 - name: Install elasticsearch and kibana
   yum: 
     name: 
@@ -19,6 +29,32 @@
   notify:
     - Restart elasticsearch
 
+- name: Get elasticsearch config
+  copy:
+    src: elasticsearch.yml
+    dest: /etc/elasticsearch/elasticsearch.yml
+  notify:
+    - Restart elasticsearch
+
+- name: Ensure elasticsearch is running
+  systemd:
+    name: elasticsearch
+    state: started
+
+- name: Ensure kibana is not running
+  systemd:
+    name: kibana
+    state: stopped
+
+- name: Generate elasticsearch passwords
+  shell:
+    cmd: /usr/share/elasticsearch/bin/elasticsearch-setup-passwords auto -v
+  register: elasticsearch_generate_passwords
+
+- name: Debug generated passwords
+  debug:
+    var: elasticsearch_generate_passwords
+
 - name: Get kibana config
   copy:
     src: kibana.yml
@@ -26,12 +62,6 @@
   notify:
     - Restart kibana
 
-- name: Get elasticsearch config
-  copy:
-    src: elasticsearch.yml
-    dest: /etc/elasticsearch/elasticsearch.yml
-  notify:
-    - Restart elasticsearch
 
 - name: Create k8s index pattern
   uri:
