@@ -26,11 +26,9 @@
   notify:
     - Restart kibana
 
-#- name: Get elasticsearch config
-#  copy:
-#    src: elasticsearch.yml
-#    dest: /etc/elasticsearch.yml
-#  notify:
-#    - Restart elasticsearch
-#
-
+- name: Get elasticsearch config
+  template:
+    src: elasticsearch.yml.j2
+    dest: /etc/elasticsearch.yml
+  notify:
+    - Restart elasticsearch
