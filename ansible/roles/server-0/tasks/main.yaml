@@ -142,7 +142,7 @@
     repo_url: https://fluent.github.io/helm-charts
 
 - name: Get fluentbit values
-  copy:
+  template:
     src: fluentbit-values.yaml
     dest: /tmp/fluentbit-values.yaml
 
