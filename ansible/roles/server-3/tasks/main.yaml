@@ -121,10 +121,10 @@
   environment:
     EXTERNAL_URL: "http://{{ hostvars['server-3']['ansible_host'] }}"
     GITLAB_ROOT_PASSWORD: "{{ gitlab_password }}"
-  notify:
-    - Reconfigure gitlab
 
-- meta: flush_handlers
+- name: Reconfigure gitlab
+  command:  
+    cmd: gitlab-ctl reconfigure
 
 - name: Create gitlab token
   shell:
