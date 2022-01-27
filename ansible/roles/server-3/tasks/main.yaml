@@ -5,7 +5,7 @@
 
 - name: Install elasticsearch and kibana
   yum: 
-    name: {{ item }}
+    name: "{{ item }}"
     state: installed
   with_items:
     - elasticsearch
