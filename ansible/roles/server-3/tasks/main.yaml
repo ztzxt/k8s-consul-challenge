@@ -124,7 +124,7 @@
 
 - name: Check if gitlab is ready
   uri:
-    url: "http://localhost/-/readiness"
+    url: "http://{{ hostvars['server-3']['ansible_host'] }}/-/readiness"
   register: gitlab_ready
   ignore_errors: true
 
