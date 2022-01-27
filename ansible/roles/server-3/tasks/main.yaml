@@ -131,13 +131,10 @@
 - name: Reconfigure gitlab
   command:  
     cmd: gitlab-ctl reconfigure
-  when: "{{ gitlab_ready.failed }}"
+  when: gitlab_ready.failed
 
 - name: Create gitlab token
   shell:
-    cmd: "gitlab-rails runner \"token = User.find_by_username('root').personal_access_tokens.create(scopes: [:read_user, :read_repository], name: 'Automation token'); token.set_token('{{ gitlab_token }}'); token.save!\""
+    cmd: "gitlab-rails runner \"token = User.find_by_username('root').personal_access_tokens.create(scopes: [:api, :write_repository], name: 'Automation token'); token.set_token('{{ gitlab_token }}'); token.save!\""
   register: set_gitlab_token
 
-- name: Debug gitlab token
-  debug:
-    var: set_gitlab_token
