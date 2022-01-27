@@ -39,5 +39,5 @@
 
 - name: Enable services
   systemd:
-    name: {{ item }}
-    with_items: installed_services
+    name: "{{ item }}"
+    with_items: {{ installed_services }}
