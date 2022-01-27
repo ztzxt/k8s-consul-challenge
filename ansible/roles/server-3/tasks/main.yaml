@@ -142,6 +142,18 @@
     headers:
       PRIVATE-TOKEN: "{{ gitlab_token }}"
 
+- name: Check if project exists
+  uri:
+    url: "http://localhost/api/v4/projects/root%2Fci-cd"
+    method: GET
+    headers:
+      PRIVATE-TOKEN: "{{ gitlab_token }}"
+  register: gitlab_project_exists
+
+- name: Debug project status
+  debug:
+    var: gitlab_project_exists
+
 - name: Create project
   uri:
     url: "http://localhost/api/v4/projects"
@@ -150,7 +162,8 @@
     headers:
       PRIVATE-TOKEN: "{{ gitlab_token }}"
     body:
-      name: api-test
+      name: ci-cd
     status_code:
       - 200
       - 201
+
