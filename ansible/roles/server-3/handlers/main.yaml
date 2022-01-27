@@ -14,4 +14,4 @@
   systemd:
     name: '{{ item }}'
     state: enabled
-  with_ items: '{{ installed_services }}'
+  with_items: '{{ installed_services }}'
