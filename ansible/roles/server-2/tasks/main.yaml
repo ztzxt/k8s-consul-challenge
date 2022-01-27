@@ -41,7 +41,7 @@
     return_content: yes
   register: prometheus_gitlab_sha_file
 
-- name: Extract sha
+- name: Extract prometheus sha
   shell:
     cmd: echo "{{ prometheus_gitlab_sha_file.content }}" | grep linux-amd64 | cut -d " " -f 1
   register: prometheus_sha
@@ -86,24 +86,17 @@
     - prometheus
     - promtool
 
-- name: Create config dir
-  file:
-    path: /etc/prometheus
-    state: directory
-    owner: prometheus
-    group: prometheus
-
-- name: Create storage dir
+- name: Create storage dir for prometheus
   file:
     path: /var/lib/prometheus
     state: directory
     owner: prometheus
     group: prometheus
 
-- name: Get prometheus config
+- name: Get prometheus config dir
   copy:
-    src: prometheus.yaml
-    dest: /etc/prometheus/prometheus.yaml
+    src: prometheus_config/
+    dest: /etc/prometheus
     owner: prometheus
     group: prometheus
   notify:
@@ -132,17 +125,104 @@
     name: grafana-enterprise
     state: installed
 
-- name: Change admin password
+- name: Change grafana admin password
   command:
     cmd: grafana-cli admin reset-admin-password {{ grafana_admin_password }}
 
-- name: Add promethes datasources
+- name: Add promethes datasources to grafana
   copy:
     src: prometheus-datasource.yaml
     dest: /etc/grafana/provisioning/datasources/prometheus.yaml
   notify: Restart grafana
 
-- name: Add cpu metrics dashboard
+- name: Add cpu metrics dashboard to grafana
   copy:
     src: cluster-metrics.json
     dest: /etc/grafana/provisioning/dashboards/cluster-cpu-metrics.json
+
+- name: Get alertmanager sha
+  uri:
+    url: https://github.com/prometheus/alertmanager/releases/download/v{{ alertmanager_version }}/sha256sums.txt
+    return_content: yes
+  register: alertmanager_gitlab_sha_file
+
+- name: Extract alertmanager sha
+  shell:
+    cmd: echo "{{ alertmanager_gitlab_sha_file.content }}" | grep linux-amd64 | cut -d " " -f 1
+  register: alertmanager_sha
+
+- name: Get alertmanager tar
+  get_url:
+    url: https://github.com/prometheus/alertmanager/releases/download/{{ alertmanager_version }}/alertmanager-{{ alertmanager_version }}.linux-amd64.tar.gz
+    dest: /tmp/alertmanager-{{ alertmanager_version }}.linux-amd64.tar.gz
+    checksum: sha256:{{ alertmanager_sha.stdout }}
+
+- name: Untar alertmanager
+  unarchive:
+    src: /tmp/alertmanager-{{ alertmanager_version }}.linux-amd64.tar.gz
+    dest: /tmp
+    creates: /tmp/alertmanager-{{ alertmanager_version }}.linux-amd64/alertmanager
+    remote_src: yes
+
+- name: Create alertmanager group
+  group:
+    name: alertmanager
+    system: true
+    state: present
+
+- name: Create alertmanager user
+  user:
+    name: alertmanager
+    system: true
+    shell: "/usr/sbin/nologin"
+    group: alertmanager
+    createhome: false
+    home: /var/lib/alertmanager
+
+- name: Move alertmanager binaries
+  copy:
+    src: /tmp/alertmanager-{{ alertmanager_version }}.linux-amd64/{{ item }}
+    remote_src: yes
+    dest: /usr/local/bin/{{ item }}
+    mode: u+x,g+x,o+x
+    owner: alertmanager
+    group: alertmanager
+  with_items:
+    - alertmanager
+    - amtool
+
+- name: Create config dir for alertmanager
+  file:
+    path: /etc/alertmanager
+    state: directory
+    owner: alertmanager
+    group: alertmanager
+
+- name: Create storage dir
+  file:
+    path: /var/lib/alertmanager
+    state: directory
+    owner: alertmanager
+    group: alertmanager
+
+- name: Get alertmanager config
+  copy:
+    src: alertmanager.yaml
+    dest: /etc/alertmanager/alertmanager.yaml
+    owner: alertmanager
+    group: alertmanager
+  notify:
+    - Reload alertmanager config
+
+- name: Validate alertmanager config
+  command:
+    cmd: amtool check-config /etc/alertmanager/alertmanager.yaml
+
+- name: Create alertmanager service
+  copy:
+    src: alertmanager.service
+    dest: /etc/systemd/system/alertmanager.service
+  notify:
+    - Restart alertmanager
+
+- meta: flush_handlers

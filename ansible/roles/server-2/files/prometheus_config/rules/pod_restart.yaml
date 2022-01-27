@@ -1,0 +1,14 @@
+groups:
+- name: pod_restart
+  rules:
+  - alert: PodRestartIn2m
+    expr: increase(kube_pod_container_status_restarts_total[2m]) > 0
+    for: 5m
+    labels:
+      severity: critical
+      pod: {{ $labels.pod}}
+      namespace: {{ $labels.namespace }}
+      container: {{ $labels.container }}
+      node: {{ $labels.node }}
+    annotations:
+      summary: Pods restarting frequently

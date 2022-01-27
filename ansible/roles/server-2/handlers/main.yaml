@@ -22,3 +22,17 @@
   systemd:
     name: grafana-server
     state: restarted
+
+- name: Restart alertmanager
+  systemd:
+    name: alertmanager
+    state: restarted
+    daemon_reload: yes
+
+- name: Reload alertmanager config
+  uri:
+    url: "http://localhost:9093/-/reload"
+    method: POST
+  register: alertmanager_reload
+  until: alertmanager_reload is not failed
+  retries: 10
