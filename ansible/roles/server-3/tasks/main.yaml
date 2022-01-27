@@ -40,11 +40,11 @@
 #    - Enable services
 #
 #- name: Apply heap size limit
-  copy:
-    src: heap_size.options
-    dest: /etc/elasticsearch/jvm.options.d/heap_size.options
-  notify:
-    - Restart elasticsearch
+#  copy:
+#    src: heap_size.options
+#    dest: /etc/elasticsearch/jvm.options.d/heap_size.options
+#  notify:
+#    - Restart elasticsearch
 #
 #- name: Get elasticsearch config
 #  template:
